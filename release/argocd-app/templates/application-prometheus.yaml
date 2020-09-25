@@ -17,4 +17,14 @@ spec:
     path: release/argocd-app/charts/prometheus-operator
     repoURL: https://github.com/rizkidoank/kubernetes-ops.git
     targetRevision: develop
-
+  ignoreDifferences:
+  - group: admissionregistration.k8s.io/v1
+    kind: MutatingWebhookConfiguration
+    name: mutatingwebhookignore
+    jsonPointers:
+    - /webhooks
+  - group: admissionregistration.k8s.io/v1
+    kind: ValidatingWebhookConfiguration
+    name: validatingwebhookignore
+    jsonPointers:
+    - /webhooks
