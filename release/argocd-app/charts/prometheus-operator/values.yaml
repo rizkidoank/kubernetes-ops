@@ -12,5 +12,3 @@ kube-prometheus-stack:
         - grafana.rizkidoank.internal
       path: /
 
-  prometheusOperator:
-    createCustomResource: false
