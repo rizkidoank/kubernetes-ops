@@ -1,15 +1,16 @@
-alertmanager:
-  enabled: false
+kube-prometheus-stack:
+  alertmanager:
+    enabled: false
 
-grafana:
-  enabled: true
-  ingress:
+  grafana:
     enabled: true
-    annotations:
-      kubernetes.io/ingress.class: traefik
-    hosts:
-      - grafana.rizkidoank.internal
-    path: /
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: traefik
+      hosts:
+        - grafana.rizkidoank.internal
+      path: /
 
-prometheusOperator:
-  createCustomResource: false
+  prometheusOperator:
+    createCustomResource: false
