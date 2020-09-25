@@ -11,9 +11,11 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    chart: kube-prometheus-stack
+    chart: prometheus-operator
     helm:
       valueFiles:
       - values.yaml
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 9.4.4
+    path: release/argocd-app/charts/prometheus-operator
+    repoURL: https://github.com/rizkidoank/kubernetes-ops.git
+    targetRevision: develop
+
