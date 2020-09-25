@@ -11,5 +11,5 @@ grafana:
       - grafana.rizkidoank.internal
     path: /
 
-prometheusOperator;
+prometheusOperator:
   createCustomResource: false
