@@ -16,6 +16,8 @@ spec:
       parameters:
       - name:  service.type
         value: LoadBalancer
+      - name: service.spec.loadBalancerIP
+        value: "192.168.2.151"
       - name: ingressRoute.annotations."kubernetes\.io/ingress\.class"
         value: traefik
       valueFiles:
