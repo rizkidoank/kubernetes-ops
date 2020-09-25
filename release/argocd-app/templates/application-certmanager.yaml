@@ -14,7 +14,8 @@ spec:
     chart: cert-manager
     helm:
       parameters:
-        installCRDS: true
+        - name: installCRDS
+          value: true
       valueFiles:
       - values.yaml
     repoURL:  https://charts.jetstack.io
