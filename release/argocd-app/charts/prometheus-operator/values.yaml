@@ -4,7 +4,7 @@ alertmanager:
 grafana:
   ingress:
     enabled: true
-    annotation:
+    annotations:
       kubernetes.io/ingress.class: traefik
     hosts:
       - grafana.rizkidoank.internal
