@@ -14,9 +14,12 @@ spec:
     helm:
       valueFiles:
       - values.yaml
-    path: release/argocd-app/charts/prometheus-operator
+    path: charts/prometheus-operator
     repoURL: https://github.com/rizkidoank/kubernetes-ops.git
     targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
   ignoreDifferences:
   - group: admissionregistration.k8s.io/v1
     kind: MutatingWebhookConfiguration

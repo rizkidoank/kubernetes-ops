@@ -17,6 +17,9 @@ spec:
         installCRDs: true
     repoURL:  https://charts.jetstack.io
     targetRevision: v1.0.2
+  syncPolicy:
+    automated:
+      prune: true
   ignoreDifferences:
     - group: apiextensions.k8s.io
       jsonPointers:
