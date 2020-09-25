@@ -16,6 +16,8 @@ spec:
       parameters:
       - name:  service.type
         value: LoadBalancer
+      - name: ingressRoute.annotations."kubernetes\.io/ingress\.class"
+        value: traefik
       valueFiles:
       - values.yaml
     repoURL: https://helm.traefik.io/traefik
