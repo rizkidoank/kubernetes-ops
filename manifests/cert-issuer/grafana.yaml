@@ -1,0 +1,10 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: grafana-cert
+  namespace: infrastructure
+spec:
+  commonName: grafana.rizkidoank.internal
+  secretName: grafana-cert
+  issuerRef:
+    name: selfsigned-issuer
