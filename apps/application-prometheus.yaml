@@ -29,9 +29,9 @@ spec:
               - grafana.rizkidoank.internal
             path: /
             tls:
-              - secretName: prometheus-operator-grafana-cert
-                hosts:
-                  - grafana.rizkidoank.internal
+            - secretName: prometheus-operator-grafana-cert
+              hosts:
+              - grafana.rizkidoank.internal
       
     repoURL: https://prometheus-community.github.io/helm-charts
     targetRevision: 9.4.4
