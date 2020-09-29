@@ -13,21 +13,20 @@ spec:
   source:
     chart: openfaas
     helm:
-      values: |
-      
-      prometheus:
-        create: false
-      alertmanager:
-        create: false
-      ingress:
-        enabled: true
-        hosts:
-          - host: openfaas.rizkidoank.internal
-            serviceName: gateway
-            servicePort: 8080
-            path: /
-        annotations:
-          kubernetes.io/ingress.class: traefik
+      values: |      
+        prometheus:
+          create: false
+        alertmanager:
+          create: false
+        ingress:
+          enabled: true
+          hosts:
+            - host: openfaas.rizkidoank.internal
+              serviceName: gateway
+              servicePort: 8080
+              path: /
+          annotations:
+            kubernetes.io/ingress.class: traefik
 
     repoURL: https://openfaas.github.io/faas-netes/
     targetRevision: 6.0.4
