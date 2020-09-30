@@ -4,7 +4,7 @@ metadata:
   name: wildcard-cert
   namespace: infrastructure
 spec:
-  secretName: grafana-cert
+  secretName: wildcard-cert
   commonName: '*.rizkidoank.internal'
   issuerRef:
     name: selfsigned-issuer
