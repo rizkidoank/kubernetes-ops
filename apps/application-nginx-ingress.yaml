@@ -20,6 +20,8 @@ spec:
             loadBalancerIP: 192.168.2.151
         defaultBackend:
           enabled: true
+        extraArgs:
+          enable-ssl-passthrough: ""
     repoURL: https://kubernetes.github.io/ingress-nginx
     targetRevision: 3.3.0
   syncPolicy:
