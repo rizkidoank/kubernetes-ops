@@ -443,6 +443,7 @@ server:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     labels: {}
 
     ## Argo Ingress.
@@ -451,7 +452,6 @@ server:
     ##
     hosts:
       - argocd.rizkidoank.internal
-      - argocd.rizkidoank.com
     paths:
       - /
     extraPaths:
@@ -461,11 +461,10 @@ server:
       #     serviceName: ssl-redirect
       #     servicePort: use-annotation
     tls:
-      []
-      # - secretName: argocd-example-tls
-      #   hosts:
-      #     - argocd.example.com
-    https: false
+      - secretName: wildcard-cert
+        hosts:
+          - argocd.rizkidoank.internal
+    https: true
   # dedicated ingess for gRPC as documented at
   # https://argoproj.github.io/argo-cd/operator-manual/ingress/
   ingressGrpc:
