@@ -4,7 +4,11 @@ metadata:
   name: grafana-cert
   namespace: infrastructure
 spec:
-  commonName: grafana.rizkidoank.internal
   secretName: grafana-cert
+  commonName: '*.rizkidoank.internal'
   issuerRef:
     name: selfsigned-issuer
+    kind: Issuer
+  dnsNames:
+  - rizkidoank.internal
+  - '*.rizkidoank.internal'
