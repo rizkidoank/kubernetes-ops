@@ -27,7 +27,7 @@ spec:
               - grafana.rizkidoank.internal
             path: /
             tls:
-              - secretName: grafana-cert
+              - secretName: wildcard-cert
                 hosts:
                   - grafana.rizkidoank.internal
       
