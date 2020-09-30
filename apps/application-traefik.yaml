@@ -13,15 +13,14 @@ spec:
   source:
     chart: traefik
     helm:
-      values: |
-      
-      service:
-        type: LoadBalancer
-        spec:
-          loadBalancerIP: 192.168.2.151
-      dashboard:
-        annotations:
-          kubernetes.io/ingress.class: traefik
+      values: |      
+        service:
+          type: LoadBalancer
+          spec:
+            loadBalancerIP: 192.168.2.151
+        dashboard:
+          annotations:
+            kubernetes.io/ingress.class: traefik
 
     repoURL: https://helm.traefik.io/traefik
     targetRevision: 9.3.0
