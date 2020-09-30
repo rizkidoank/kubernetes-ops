@@ -22,6 +22,7 @@ spec:
           enabled: true
         extraArgs:
           enable-ssl-passthrough: ""
+          default-ssl-certificate: infrastructure/wildcard-cert
     repoURL: https://kubernetes.github.io/ingress-nginx
     targetRevision: 3.3.0
   syncPolicy:
