@@ -334,8 +334,8 @@ server:
 
   ## Additional command line arguments to pass to argocd-server
   ##
-  extraArgs:
-  - --insecure
+  extraArgs: []
+  #- --insecure
 
   ## Environment variables to pass to argocd-server
   ##
@@ -443,7 +443,7 @@ server:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
-      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/ssl-passthrough: true
     labels: {}
 
     ## Argo Ingress.
@@ -461,7 +461,7 @@ server:
       #     serviceName: ssl-redirect
       #     servicePort: use-annotation
     tls:
-      - secretName: wildcard-cert
+      - secretName: argocd-cert
         hosts:
           - argocd.rizkidoank.internal
     https: true
