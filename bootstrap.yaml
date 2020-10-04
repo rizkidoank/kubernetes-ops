@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: namespaces
   namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: default
@@ -22,6 +24,8 @@ kind: Application
 metadata:
   name: homelab-apps
   namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: default
