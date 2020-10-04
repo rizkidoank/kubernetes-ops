@@ -9,9 +9,4 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: istio-operator
----
-apiVersion: v1
-kind: Namespace
-metadata:
   name: istio-system
