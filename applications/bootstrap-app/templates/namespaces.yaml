@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: infrastructure
+  labels:
+    name: "infrastructure"
+    istio-injection: "enabled"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: istio-operator
+apiVersion: v1
+---
+kind: Namespace
+metadata:
+  name: istio-system
