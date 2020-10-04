@@ -12,17 +12,62 @@ global:
     repository: argoproj/argocd
     tag: v1.7.6
     imagePullPolicy: IfNotPresent
+  securityContext: {}
+  #  runAsUser: 999
+  #  runAsGroup: 999
+  #  fsGroup: 999
+  imagePullSecrets: []
+  hostAliases: []
+  # - ip: 10.20.30.40
+  #   hostnames:
+  #   - git.myhostname
 
 ## Controller
 controller:
   name: application-controller
+
+  image:
+    repository: # argoproj/argocd
+    tag: # v1.7.6
+    imagePullPolicy: # IfNotPresent
+
+  ## Argo controller commandline flags
   args:
     statusProcessors: "20"
     operationProcessors: "10"
     appResyncPeriod: "180"
 
+  ## Argo controller log level
   logLevel: info
 
+  ## Additional command line arguments to pass to argocd-controller
+  ##
+  extraArgs: []
+
+  ## Environment variables to pass to argocd-controller
+  ##
+  env: []
+
+  ## Annotations to be added to controller pods
+  ##
+  podAnnotations: {}
+
+  ## Labels to be added to controller pods
+  ##
+  podLabels: {}
+
+  ## Labels to set container specific security contexts
+  containerSecurityContext: {}
+    # capabilities:
+    #   drop:
+    #     - all
+
+  ## Configures the controller port
+  containerPort: 8082
+
+  ## Readiness and liveness probes for default backend
+  ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+  ##
   readinessProbe:
     failureThreshold: 3
     initialDelaySeconds: 10
@@ -36,6 +81,28 @@ controller:
     successThreshold: 1
     timeoutSeconds: 1
 
+  ## Additional volumeMounts to the controller main container.
+  volumeMounts: []
+
+  ## Additional volumes to the controller pod.
+  volumes: []
+
+  ## Controller service configuration
+  service:
+    annotations: {}
+    labels: {}
+    port: 8082
+    portName: https-controller
+
+  ## Node selectors and tolerations for server scheduling to nodes with taints
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ##
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  priorityClassName: ""
+
   resources:
     limits:
       cpu: 700m
@@ -44,6 +111,12 @@ controller:
       cpu: 250m
       memory: 256Mi
 
+  serviceAccount:
+    create: true
+    name: argocd-application-controller
+    annotations: {}
+
+  ## Server metrics controller configuration
   metrics:
     enabled: false
     service:
@@ -88,6 +161,11 @@ controller:
     #   namespace: monitoring
     #   additionalLabels: {}
 
+  ## Enable Admin ClusterRole resources.
+  ## Enable if you would like to grant rights to ArgoCD to deploy to the local Kubernetes cluster.
+  clusterAdminAccess:
+    enabled: true
+
 ## Dex
 dex:
   enabled: true
@@ -97,11 +175,33 @@ dex:
     repository: quay.io/dexidp/dex
     tag: v2.22.0
     imagePullPolicy: IfNotPresent
+  initImage:
+    repository:
+    tag:
+    imagePullPolicy:
 
+  ## Environment variables to pass to the Dex server
+  ##
+  env: []
+
+  ## Annotations to be added to the Dex server pods
+  ##
+  podAnnotations: {}
+
+  ## Labels to be added to the Dex server pods
+  ##
+  podLabels: {}
+
+  serviceAccount:
+    create: true
+    name: argocd-dex-server
+
+  ## Additional volumeMounts to the controller main container.
   volumeMounts:
     - name: static-files
       mountPath: /shared
 
+  ## Additional volumes to the controller pod.
   volumes:
     - name: static-files
       emptyDir: {}
@@ -111,6 +211,22 @@ dex:
   servicePortHttp: 5556
   containerPortGrpc: 5557
   servicePortGrpc: 5557
+
+  ## Node selectors and tolerations for server scheduling to nodes with taints
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ##
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  priorityClassName: ""
+
+  ## Labels to set container specific security contexts
+  containerSecurityContext: {}
+    # capabilities:
+    #   drop:
+    #     - all
+
 
   resources:
     limits:
@@ -133,6 +249,34 @@ redis:
   containerPort: 6379
   servicePort: 6379
 
+  ## Environment variables to pass to the Redis server
+  ##
+  env: []
+
+  ## Annotations to be added to the Redis server pods
+  ##
+  podAnnotations: {}
+
+  ## Labels to be added to the Redis server pods
+  ##
+  podLabels: {}
+
+  ## Node selectors and tolerations for server scheduling to nodes with taints
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ##
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  priorityClassName: ""
+
+  ## Labels to set container specific security contexts
+  containerSecurityContext: {}
+    # capabilities:
+    #   drop:
+    #     - all
+
+  ## Redis Pod specific security context
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
@@ -149,6 +293,26 @@ redis:
 
   volumeMounts: []
   volumes: []
+
+# This key configures Redis-HA subchart and when enabled (redis-ha.enabled=true)
+# the custom redis deployment is omitted
+redis-ha:
+  enabled: false
+  # Check the redis-ha chart for more properties
+  exporter:
+    enabled: true
+  persistentVolume:
+    enabled: false
+  redis:
+    masterGroupName: argocd
+    config:
+      save: "\"\""
+  haproxy:
+    enabled: true
+    metrics:
+      enabled: true
+  image:
+    tag: 5.0.8-alpine
 
 ## Server
 server:
@@ -168,13 +332,32 @@ server:
     tag: # v1.7.6
     imagePullPolicy: # IfNotPresent
 
+  ## Additional command line arguments to pass to argocd-server
+  ##
   extraArgs:
   - --insecure
 
+  ## Environment variables to pass to argocd-server
+  ##
+  env: []
+
+  ## Argo server log level
   logLevel: info
 
+  ## Annotations to be added to controller pods
+  ##
+  podAnnotations: {}
+
+  ## Labels to be added to controller pods
+  ##
+  podLabels: {}
+
+  ## Configures the server port
   containerPort: 8080
 
+  ## Readiness and liveness probes for default backend
+  ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+  ##
   readinessProbe:
     failureThreshold: 3
     initialDelaySeconds: 10
@@ -188,6 +371,27 @@ server:
     successThreshold: 1
     timeoutSeconds: 1
 
+  ## Additional volumeMounts to the server main container.
+  volumeMounts: []
+
+  ## Additional volumes to the controller pod.
+  volumes: []
+
+  ## Node selectors and tolerations for server scheduling to nodes with taints
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ##
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  priorityClassName: ""
+
+  ## Labels to set container specific security contexts
+  containerSecurityContext: {}
+    # capabilities:
+    #   drop:
+    #     - all
+
   resources:
     limits:
       cpu: 100m
@@ -196,6 +400,7 @@ server:
       cpu: 50m
       memory: 64Mi
 
+  ## Certificate configuration
   certificate:
     enabled: false
     domain: argocd.example.com
@@ -228,9 +433,16 @@ server:
     #   namespace: monitoring
     #   additionalLabels: {}
 
-  ingress:
-    enabled: false
+  serviceAccount:
+    create: true
+    name: argocd-server
+    ## Annotations applied to created service account
     annotations: {}
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
     labels: {}
 
     ## Argo Ingress.
@@ -239,6 +451,7 @@ server:
     ##
     hosts:
       - argocd.rizkidoank.internal
+      - argocd.rizkidoank.com
     paths:
       - /
     extraPaths:
@@ -247,10 +460,11 @@ server:
       #   backend:
       #     serviceName: ssl-redirect
       #     servicePort: use-annotation
-    tls: []
-    #  - secretName: argocd-cert
-    #    hosts:
-    #    - argocd.rizkidoank.internal
+    tls:
+      []
+      # - secretName: argocd-example-tls
+      #   hosts:
+      #     - argocd.example.com
     https: false
   # dedicated ingess for gRPC as documented at
   # https://argoproj.github.io/argo-cd/operator-manual/ingress/
@@ -292,15 +506,15 @@ server:
   ## ArgoCD config
   ## reference https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cm.yaml
   config:
-    resource.customizations: |
-      networking.k8s.io/Ingress:
-        health.lua: |
-          hs = {}
-          hs.status = "Healthy"
-          return hs
+    #resource.customizations: |
+    #  networking.k8s.io/Ingress:
+    #    health.lua: |
+    #      hs = {}
+    #      hs.status = "Healthy"
+    #      return hs
     
-    resource.compareoptions: |
-      ignoreResourceStatusField: crd
+    #resource.compareoptions: |
+    #  ignoreResourceStatusField: crd
 
     # Argo CD's externally facing base URL (optional). Required when configuring SSO
     url: https://argocd.rizkidoank.internal
@@ -333,6 +547,107 @@ server:
   ## Annotations to be added to ArgoCD ConfigMap
   configAnnotations: {}
 
+  ## ArgoCD rbac config
+  ## reference https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md
+  rbacConfig:
+    {}
+    # policy.csv is an file containing user-defined RBAC policies and role definitions (optional).
+    # Policy rules are in the form:
+    #   p, subject, resource, action, object, effect
+    # Role definitions and bindings are in the form:
+    #   g, subject, inherited-subject
+    # See https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md for additional information.
+    # policy.csv: |
+    #   # Grant all members of the group 'my-org:team-alpha; the ability to sync apps in 'my-project'
+    #   p, my-org:team-alpha, applications, sync, my-project/*, allow
+    #   # Grant all members of 'my-org:team-beta' admins
+    #   g, my-org:team-beta, role:admin
+    # policy.default is the name of the default role which Argo CD will falls back to, when
+    # authorizing API requests (optional). If omitted or empty, users may be still be able to login,
+    # but will see no apps, projects, etc...
+    # policy.default: role:readonly
+    # scopes controls which OIDC scopes to examine during rbac enforcement (in addition to `sub` scope).
+    # If omitted, defaults to: '[groups]'. The scope value can be a string, or a list of strings.
+    # scopes: '[cognito:groups, email]'
+
+  ## Annotations to be added to ArgoCD rbac ConfigMap
+  rbacConfigAnnotations: {}
+
+  ## Not well tested and not well supported on release v1.0.0.
+  ## Applications
+  ## reference: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/
+  additionalApplications: []
+  # - name: guestbook
+  #   namespace: argocd
+  #   additionalLabels: {}
+  #   additionalAnnotations: {}
+  #   project: guestbook
+  #   source:
+  #     repoURL: https://github.com/argoproj/argocd-example-apps.git
+  #     targetRevision: HEAD
+  #     path: guestbook
+  #     directory:
+  #       recurse: true
+  #  destination:
+  #     server: https://kubernetes.default.svc
+  #     namespace: guestbook
+  #  syncPolicy:
+  #    automated:
+  #      prune: false
+  #      selfHeal: false
+
+  ## Projects
+  ## reference: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/
+  additionalProjects: []
+  # - name: guestbook
+  #   namespace: argocd
+  #   additionalLabels: {}
+  #   additionalAnnotations: {}
+  #   description: Example Project
+  #   sourceRepos:
+  #   - '*'
+  #   destinations:
+  #   - namespace: guestbook
+  #     server: https://kubernetes.default.svc
+  #   clusterResourceWhitelist: []
+  #   namespaceResourceBlacklist:
+  #   - group: ''
+  #     kind: ResourceQuota
+  #   - group: ''
+  #     kind: LimitRange
+  #   - group: ''
+  #     kind: NetworkPolicy
+  #     orphanedResources: {}
+  #     roles: []
+  #   namespaceResourceWhitelist:
+  #   - group: 'apps'
+  #     kind: Deployment
+  #   - group: 'apps'
+  #     kind: StatefulSet
+  #   orphanedResources: {}
+  #   roles: []
+  #   syncWindows:
+  #   - kind: allow
+  #     schedule: '10 1 * * *'
+  #     duration: 1h
+  #     applications:
+  #     - '*-prod'
+  #     manualSync: true
+
+  ## Enable Admin ClusterRole resources.
+  ## Enable if you would like to grant rights to ArgoCD to deploy to the local Kubernetes cluster.
+  clusterAdminAccess:
+    enabled: true
+
+  ## Enable BackendConfig custom resource for Google Kubernetes Engine
+  GKEbackendConfig:
+    enabled: false
+    spec: {}
+  #  spec:
+  #    iap:
+  #      enabled: true
+  #      oauthclientCredentials:
+  #        secretName: argocd-secret
 
 ## Repo Server
 repoServer:
@@ -352,10 +667,31 @@ repoServer:
     tag: # v1.7.6
     imagePullPolicy: # IfNotPresent
 
+  ## Additional command line arguments to pass to argocd-repo-server
+  ##
+  extraArgs: []
 
+  ## Environment variables to pass to argocd-repo-server
+  ##
+  env: []
+
+  ## Argo repoServer log level
   logLevel: info
+
+  ## Annotations to be added to repo server pods
+  ##
+  podAnnotations: {}
+
+  ## Labels to be added to repo server pods
+  ##
+  podLabels: {}
+
+  ## Configures the repo server port
   containerPort: 8081
 
+  ## Readiness and liveness probes for default backend
+  ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+  ##
   readinessProbe:
     failureThreshold: 3
     initialDelaySeconds: 10
@@ -368,6 +704,27 @@ repoServer:
     periodSeconds: 10
     successThreshold: 1
     timeoutSeconds: 1
+
+  ## Additional volumeMounts to the repo server main container.
+  volumeMounts: []
+
+  ## Additional volumes to the repo server pod.
+  volumes: []
+
+  ## Node selectors and tolerations for server scheduling to nodes with taints
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ##
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  priorityClassName: ""
+
+  ## Labels to set container specific security contexts
+  containerSecurityContext: {}
+    # capabilities:
+    #   drop:
+    #     - all
 
   resources: {}
   #  limits:
@@ -417,7 +774,28 @@ repoServer:
   #     - list
   #     - watch
 
-  
+  ## Use init containers to configure custom tooling
+  ## https://argoproj.github.io/argo-cd/operator-manual/custom_tools/
+  ## When using the volumes & volumeMounts section bellow, please comment out those above.
+ #  volumes:
+ #  - name: custom-tools
+ #    emptyDir: {}
+ #
+ #  initContainers:
+ #  - name: download-tools
+ #    image: alpine:3.8
+ #    command: [sh, -c]
+ #    args:
+ #      - wget -qO- https://get.helm.sh/helm-v2.16.1-linux-amd64.tar.gz | tar -xvzf - &&
+ #        mv linux-amd64/helm /custom-tools/
+ #    volumeMounts:
+ #      - mountPath: /custom-tools
+ #        name: custom-tools
+ #  volumeMounts:
+ #  - mountPath: /usr/local/bin/helm
+ #    name: custom-tools
+ #    subPath: helm
+
 ## Argo Configs
 configs:
   knownHostsAnnotations: {}
@@ -528,4 +906,3 @@ configs:
 
 openshift:
   enabled: false
-
