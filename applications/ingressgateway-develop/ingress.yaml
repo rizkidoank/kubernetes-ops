@@ -13,6 +13,8 @@ spec:
         protocol: HTTP
       hosts:
         - "argocd.rizkidoank.internal"
+        - "grafana.rizkidoank.internal"
+      
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -29,3 +31,20 @@ spec:
             host: argocd-server.argocd.svc.cluster.local
             port:
               number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: prometheus-operator-grafana
+spec:
+  hosts:
+  - "grafana.rizkidoank.internal"
+  gateways:
+    - ingressgateway-develop
+  http:
+    - route:
+        - destination:
+            host: prometheus-operator-grafana.infrastructure.svc.cluster.local
+            port:
+              number: 80
+
