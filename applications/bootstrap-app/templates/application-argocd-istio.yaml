@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/rizkidoank/kubernetes-ops.git
     targetRevision: develop
-    path: applications/argocd-istio-app
+    path: applications/ingressgateway-develop
   destination:
     namespace: infrastructure
     server: https://kubernetes.default.svc
