@@ -2,7 +2,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: develop-gateway
+  name: ingressgateway-develop
 spec:
   selector:
     istio: ingressgateway
@@ -22,7 +22,7 @@ spec:
   hosts:
   - "argocd.rizkidoank.internal"
   gateways:
-    - develop-gateway
+    - ingressgateway-develop
   http:
     - route:
         - destination:

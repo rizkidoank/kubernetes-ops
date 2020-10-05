@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-istio-app
+  name: ingressgateway-develop-app
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
