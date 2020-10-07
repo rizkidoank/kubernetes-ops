@@ -13,6 +13,8 @@ spec:
       protocol: HTTP
     tls:
       httpsRedirect: true
+    hosts:
+    - "argocd.rizkidoank.internal"
   - port:
       number: 443
       name: argo-https 
