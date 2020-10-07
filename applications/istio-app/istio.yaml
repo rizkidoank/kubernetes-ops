@@ -10,8 +10,3 @@ spec:
     - name: ingressgateway-develop
       namespace: develop
       enabled: true
-      k8s:
-        service:
-          type: LoadBalancer
-          loadBalancerIP: 192.168.2.151
-
