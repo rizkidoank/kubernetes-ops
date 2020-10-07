@@ -39,8 +39,8 @@ spec:
     istio: ingressgateway
   servers:
   - port:
-      name: grafana
-      number: 3000
+      name: http-grafana
+      number: 80
       protocol: HTTP
     hosts:
     - "grafana.rizkidoank.internal"
