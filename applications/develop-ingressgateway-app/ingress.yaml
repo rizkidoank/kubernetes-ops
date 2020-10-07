@@ -57,7 +57,7 @@ spec:
   http:
     - route:
         - destination:
-            host: prometheus-operator-grafana.develop.svc.cluster.local
+            host: prometheus-operator-app-grafana.develop.svc.cluster.local
             port:
               number: 3000
 
@@ -67,7 +67,7 @@ kind: DestinationRule
 metadata:
   name: grafana
 spec:
-  host: prometheus-operator-grafana.develop.svc.cluster.local
+  host: prometheus-operator-app-grafana.develop.svc.cluster.local
   trafficPolicy:
     tls:
       mode: DISABLE
