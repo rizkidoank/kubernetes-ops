@@ -22,7 +22,7 @@ spec:
   hosts:
   - "argocd.rizkidoank.internal"
   gateways:
-    - ingressgateway-develop
+    - argocd-gw
   http:
     - route:
         - destination:
