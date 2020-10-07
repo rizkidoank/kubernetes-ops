@@ -44,7 +44,7 @@ spec:
   http:
     - route:
         - destination:
-            host: prometheus-operator-grafana.infrastructure.svc.cluster.local
+            host: prometheus-operator-grafana.develop.svc.cluster.local
             port:
               number: 80
 
