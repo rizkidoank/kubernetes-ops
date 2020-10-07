@@ -8,9 +8,12 @@ spec:
     istio: ingressgateway
   servers:
     - port:
-        number: 80
-        name: http
-        protocol: HTTP
+        number: 443
+        name: argo-https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: wildcard-selfsigned-cert
       hosts:
         - "argocd.rizkidoank.internal"      
 ---
@@ -28,7 +31,7 @@ spec:
         - destination:
             host: argocd-server.argocd.svc.cluster.local
             port:
-              number: 80
+              number: 443
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -39,9 +42,12 @@ spec:
     istio: ingressgateway
   servers:
   - port:
-      name: http-grafana
-      number: 80
-      protocol: HTTP
+      name: grafana-https
+      number: 443
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: wildcard-selfsigned-cert
     hosts:
     - "grafana.rizkidoank.internal"
 ---
@@ -60,14 +66,3 @@ spec:
         host: prometheus-operator-app-grafana.develop.svc.cluster.local
         port:
           number: 80
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: grafana-dr
-spec:
-  host: prometheus-operator-app-grafana.develop.svc.cluster.local
-  trafficPolicy:
-    tls:
-      mode: DISABLE
----
