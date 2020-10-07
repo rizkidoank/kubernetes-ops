@@ -53,7 +53,7 @@ spec:
   hosts:
   - "grafana.rizkidoank.internal"
   gateways:
-    - grafana-gateway
+  - grafana-gateway
   http:
     - route:
         - destination:
@@ -61,3 +61,14 @@ spec:
             port:
               number: 3000
 
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: grafana
+spec:
+  host: prometheus-operator-grafana.develop.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
