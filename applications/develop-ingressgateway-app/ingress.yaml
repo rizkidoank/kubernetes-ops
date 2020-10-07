@@ -33,7 +33,7 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: grafana-gateway
+  name: grafana-gw
 spec:
   selector:
     istio: ingressgateway
@@ -48,24 +48,23 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: prometheus-operator-grafana
+  name: grafana-vs
 spec:
   hosts:
   - "grafana.rizkidoank.internal"
   gateways:
-  - grafana-gateway
+  - grafana-gw
   http:
-    - route:
-        - destination:
-            host: prometheus-operator-app-grafana.develop.svc.cluster.local
-            port:
-              number: 3000
-
+  - route:
+    - destination:
+        host: prometheus-operator-app-grafana.develop.svc.cluster.local
+        port:
+          number: 3000
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: grafana
+  name: grafana-dr
 spec:
   host: prometheus-operator-app-grafana.develop.svc.cluster.local
   trafficPolicy:
