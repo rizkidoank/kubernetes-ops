@@ -1,10 +1,10 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: wildcard-cert
-  namespace: infrastructure
+  name: wildcard-selfsigned-cert
+  namespace: develop
 spec:
-  secretName: wildcard-cert
+  secretName: wildcard-selfsigned-cert
   commonName: '*.rizkidoank.internal'
   issuerRef:
     name: selfsigned-issuer
