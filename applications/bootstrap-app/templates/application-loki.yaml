@@ -14,15 +14,20 @@ spec:
     chart: loki
     helm:
       values: |
-        resources:
-          limits:
-            cpu: 200m
-            memory: 256Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
+        loki:
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+        promtail:
+          enabled: false
+        fluent-bit:
+          enabled: true
     repoURL: https://grafana.github.io/loki/charts
-    targetRevision: 0.31.1
+    targetRevision: 0.41.1
   syncPolicy:
     automated:
       prune: true
