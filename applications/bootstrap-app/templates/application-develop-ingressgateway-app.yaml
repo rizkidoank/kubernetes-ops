@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-istio-app
+  name: develop-ingressgateway-app
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,9 +10,9 @@ spec:
   source:
     repoURL: https://github.com/rizkidoank/kubernetes-ops.git
     targetRevision: develop
-    path: applications/argocd-istio-app
+    path: applications/develop-ingressgateway-app
   destination:
-    namespace: infrastructure
+    namespace: develop
     server: https://kubernetes.default.svc
   syncPolicy:
     automated:

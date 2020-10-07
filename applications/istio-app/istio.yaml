@@ -8,7 +8,7 @@ spec:
   components:
     ingressGateways:
     - name: develop-gateway
-      namespace: infrastructure
+      namespace: develop
       enabled: true
       k8s:
         service: LoadBalancer
