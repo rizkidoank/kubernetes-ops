@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki-app
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: develop
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: loki
+    helm:
+      values: |
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    repoURL: https://grafana.github.io/loki/charts
+    targetRevision: 0.41.1
+  syncPolicy:
+    automated:
+      prune: true

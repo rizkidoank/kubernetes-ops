@@ -12,6 +12,14 @@ spec:
   project: default
   source:
     chart: kube-prometheus-stack
+    values: |
+      additionalDataSources:
+        - name: loki
+          access: proxy
+          jsonData:
+            maxLines: 1000
+          type: loki
+          url: http://loki-app-loki:3100
     repoURL: https://prometheus-community.github.io/helm-charts
     targetRevision: 9.4.4
   syncPolicy:
