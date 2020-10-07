@@ -19,7 +19,7 @@ spec:
           jsonData:
             maxLines: 1000
           type: loki
-          url: http://loki-app-loki:3100
+          url: http://loki-app:3100
     repoURL: https://prometheus-community.github.io/helm-charts
     targetRevision: 9.4.4
   syncPolicy:
