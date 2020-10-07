@@ -59,7 +59,7 @@ spec:
     - destination:
         host: prometheus-operator-app-grafana.develop.svc.cluster.local
         port:
-          number: 3000
+          number: 80
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
