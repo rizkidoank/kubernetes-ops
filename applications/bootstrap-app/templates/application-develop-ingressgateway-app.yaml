@@ -1,7 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+<<<<<<< HEAD:applications/bootstrap-app/templates/application-develop-ingressgateway-app.yaml
   name: develop-ingressgateway-app
+=======
+  name: ingressgateway-develop-app
+>>>>>>> c9b6bf0a17d7dbe476d82f4125bad674c71664ff:applications/bootstrap-app/templates/application-ingressgateway-develop.yaml
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,7 +14,11 @@ spec:
   source:
     repoURL: https://github.com/rizkidoank/kubernetes-ops.git
     targetRevision: develop
+<<<<<<< HEAD:applications/bootstrap-app/templates/application-develop-ingressgateway-app.yaml
     path: applications/develop-ingressgateway-app
+=======
+    path: applications/ingressgateway-develop
+>>>>>>> c9b6bf0a17d7dbe476d82f4125bad674c71664ff:applications/bootstrap-app/templates/application-ingressgateway-develop.yaml
   destination:
     namespace: develop
     server: https://kubernetes.default.svc
