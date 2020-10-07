@@ -7,15 +7,21 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-    - port:
-        number: 443
-        name: argo-https
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        credentialName: wildcard-selfsigned-cert
-      hosts:
-        - "argocd.rizkidoank.internal"      
+  - port:
+      number: 80
+      name: argo-http
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
+  - port:
+      number: 443
+      name: argo-https 
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: wildcard-selfsigned-cert
+    hosts:
+    - "argocd.rizkidoank.internal"      
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -25,13 +31,13 @@ spec:
   hosts:
   - "argocd.rizkidoank.internal"
   gateways:
-    - argocd-gw
+  - argocd-gw
   http:
-    - route:
-        - destination:
-            host: argocd-server.argocd.svc.cluster.local
-            port:
-              number: 443
+  - route:
+    - destination:
+        host: argocd-server.argocd.svc.cluster.local
+        port:
+          number: 80
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -41,6 +47,12 @@ spec:
   selector:
     istio: ingressgateway
   servers:
+  - port:
+      name: grafana-http
+      number: 80
+      protocol: HTTP
+    hosts:
+    - "grafana.rizkidoank.internal"
   - port:
       name: grafana-https
       number: 443
