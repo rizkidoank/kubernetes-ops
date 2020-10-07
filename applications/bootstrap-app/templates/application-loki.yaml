@@ -22,7 +22,7 @@ spec:
             cpu: 100m
             memory: 128Mi
     repoURL: https://grafana.github.io/loki/charts
-    targetRevision: 0.41.1
+    targetRevision: 0.31.1
   syncPolicy:
     automated:
       prune: true
