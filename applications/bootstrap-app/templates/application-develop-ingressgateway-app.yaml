@@ -12,7 +12,7 @@ spec:
     targetRevision: develop
     path: applications/develop-ingressgateway-app
   destination:
-    namespace: develop
+    namespace: istio-system
     server: https://kubernetes.default.svc
   syncPolicy:
     automated:
