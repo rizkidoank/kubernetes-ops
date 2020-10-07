@@ -1,0 +1,52 @@
+# If you intened to deploy Kubernetes in an air-gapped environment,
+# please consult the documentation on how to configure custom RKE images.
+nodes:
+- address: 192.168.2.200
+  role:
+  - controlplane
+  - etcd
+  - worker
+  user: ubuntu
+- address: 192.168.2.201
+  role:
+  - controlplane
+  - etcd
+  - worker
+  user: ubuntu
+- address: 192.168.2.202
+  role:
+  - controlplane
+  - etcd
+  - worker
+  user: ubuntu
+- address: 192.168.2.203
+  role:
+  - worker
+  user: ubuntu
+- address: 192.168.2.204
+  role:
+  - worker
+  user: ubuntu
+network:
+  plugin: flannel
+ssh_key_path: ~/.ssh/id_rsa
+ssh_agent_auth: false
+authentication:
+  strategy: x509
+  sans:
+    - "192.168.255.200"
+    - "k8s-dev.rizkidoank.com"
+    - "k8s-dev.rizkidoank.internal"
+authorization:
+  mode: rbac
+ingress:
+  provider: none
+cluster_name: "k8s-dev"
+dns:
+  provider: coredns
+  upstreamnameservers:
+  - 192.168.2.1
+  - 1.1.1.1
+monitoring:
+    provider: metrics-server
+
