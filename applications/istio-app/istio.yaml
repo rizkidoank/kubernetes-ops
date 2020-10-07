@@ -5,8 +5,11 @@ metadata:
   name: istio-control-plane
 spec:
   profile: default
-#  components:
-#    ingressGateways:
-#    - name: ingressgateway-develop
-#      namespace: develop
-#      enabled: true
+  components:
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      k8s:
+        service:
+          type: LoadBalancer
+          LoadBalancerIP: "192.168.2.151"
