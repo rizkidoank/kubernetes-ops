@@ -5,8 +5,8 @@ metadata:
   name: istio-control-plane
 spec:
   profile: default
-  components:
-    ingressGateways:
-    - name: ingressgateway-develop
-      namespace: develop
-      enabled: true
+#  components:
+#    ingressGateways:
+#    - name: ingressgateway-develop
+#      namespace: develop
+#      enabled: true
