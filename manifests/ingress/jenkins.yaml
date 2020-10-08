@@ -39,5 +39,5 @@ spec:
     - destination:
         host: jenkins-app.develop.svc.cluster.local
         port:
-          number: 80
+          number: 8080
 ---
