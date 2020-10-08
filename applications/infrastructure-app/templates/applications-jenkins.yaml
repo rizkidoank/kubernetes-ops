@@ -17,6 +17,8 @@ spec:
         master:
           admin:
             existingSecret: jenkins-admin-creds
+        persistence:
+          enabled: false
     repoURL: https://charts.jenkins.io
     targetRevision: 2.8.2
   syncPolicy:
