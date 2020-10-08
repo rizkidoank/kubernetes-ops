@@ -23,7 +23,7 @@ spec:
       mode: SIMPLE
       credentialName: wildcard-selfsigned-cert
     hosts:
-    - "argocd.rizkidoank.internal"      
+    - "jenkins.rizkidoank.internal"      
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
