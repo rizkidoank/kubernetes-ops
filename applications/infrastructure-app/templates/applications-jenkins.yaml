@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins-app
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: develop
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: jenkins
+    helm:
+      values: |
+        master:
+          admin:
+            existingSecret: jenkins-admin-creds
+    repoURL: https://charts.jenkins.io
+    targetRevision: 2.8.2
+  syncPolicy:
+    automated:
+      prune: true
