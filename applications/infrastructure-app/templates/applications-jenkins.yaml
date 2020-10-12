@@ -23,6 +23,17 @@ spec:
           numExecutors: 5
         persistence:
           enabled: false
+        JCasC:
+          configScripts:
+            develop: |
+              jenkins:
+                noUsageStatistics: true
+                numExecutors: 5
+              simple-theme-plugin:
+                cssUrl: https://cdn.rawgit.com/afonsof/jenkins-material-theme/gh-pages/dist/material-blue.css
+              location:
+                adminAddress: "rizki.doank94@gmail.com"
+                url: "https://jenkins.rizkidoank.internal/"
     repoURL: https://charts.jenkins.io
     targetRevision: 2.8.2
   syncPolicy:
